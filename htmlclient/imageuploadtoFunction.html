@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+            <style type="text/css">
+            .dropzone {
+                border: 2px dashed #ccc;
+                width: 300px;
+                height: 200px;
+            }
+        </style>
+
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#Upload').click(function () {
+                var formData = new FormData();
+                var opmlFile = $('#me')[0];
+                formData.append("opmlFile", opmlFile.files[0]);
+
+                var dayaManyFiles = new FormData();
+
+                $.each($("input[type='file']")[0].files, function(i, file) {
+                    dayaManyFiles.append('file', file);
+                });
+
+                $.ajax({
+                    url: 'https://tryfunctionsdemo.azurewebsites.net/api/ImageUpload?code=gca9012mp6usu1pwuss4qjjorhmqfwauf6vz48eorlih1o47vi9vrpdykve3gt5xddgbyd12lnmi',
+                    type: 'POST',
+                    data: dayaManyFiles,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(result){
+                        console.log(result);
+                    },
+                    error: function(err){
+                        console.log(err);
+                    }
+                });
+            });
+        });
+
+        $(function () {
+            $('#GetImages').click(function () {
+                console.log("!!!GetImages Function Start!!!");
+
+                $.ajax({
+                    url: 'https://tryfunctionsdemo.azurewebsites.net/api/ImageViewText?code=erlbo3jy7ll2hjt6gkore8kt9id56plss49vxo5rf1364gf1orn5c304n4bxdlflkct0rhk6gvi',
+                    type: 'GET',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(result){
+                        console.log("response ==> "+result +"\n\n");
+
+                        var list = $('#ImageList')
+                        $.each(JSON.parse(result), function(i, imageTextObj){
+                            console.log("i = " +i);
+                            console.log("obj = " +imageTextObj.Text);
+                            console.log("obj = " +imageTextObj.Uri);
+
+                            var output = '<li>';
+                            output += '<img src="'+imageTextObj.Uri+'" alt ="'+imageTextObj.Uri+'" style=\"height:250px;max-width:250x;width: expression(this.width > 500 ? 500: true);\">';
+                            output += '<br>';
+                            output += imageTextObj.Text;
+                            output += '</li>';
+                            //var output = '<li><img src="'+imageTextObj.Uri+'" alt ="'+imageTextObj.Uri+'" style=\"height:250px;max-width:250x;width: expression(this.width > 500 ? 500: true);\"></li>';
+
+                            list.append(output);
+                        });
+
+                    },
+                    error: function(err){
+                        console.log(err);
+                    }
+                });
+            });
+        });
+
+/*
+            jQuery(document).ready(function($) {
+                var filename = '';
+                var image_data = '';
+
+                $.event.props.push('dataTransfer');
+                $('.dropzone').on({
+                    dragenter: function(e) {
+                        $(this).css('background-color', 'lightBlue');
+                    },
+                    dragleave: function(e) {
+                        $(this).css('background-color', 'white');
+                    },
+                    drop: function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+
+                        var file = e.dataTransfer.files[0];
+                        var fileReader = new FileReader();
+
+                        var this_obj = $(this);
+
+                        fileReader.onload = (function(file) {
+                            return function(event) {
+                                // Preview
+                                filename = file.name;
+                                image_data = event.target.result;
+                                $(this_obj).next().html('<a href="#" class="upload-file">Upload file</a>');
+                                $(this_obj).html('<img style="max-width: 200px; max-height: 200px;" src="' + event.target.result + '">');
+                            };
+                        })(file);
+
+                        fileReader.readAsDataURL(file);  
+                            
+                    }
+                });
+            });
+            */              
+    </script>    
+</head>
+
+    <form enctype="multipart/form-data">
+        <label>
+            Using JQuery to upload list of files
+        </label>
+        <input name="file" type="file" id="me" multiple />
+        <input type="button" id="Upload" value="Upload" />
+    </form>
+
+        <!-- Multiple dropzones -->
+        <div class="dropzone">
+            Drop files here
+        </div>
+
+<br><br>
+
+<form >
+    <label>
+        Using JQuery to read list of files
+    </label>
+    <input type="button" id="GetImages" value="GetImages" />
+</form>
+<div data-role="content">
+    <ul id="ImageList" data-role="listview">
+
+    </ul>
+</div>
