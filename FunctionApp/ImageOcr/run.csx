@@ -39,7 +39,7 @@ public static void Run( ICloudBlob inputBlob, ICollector<ImageText> outputTable,
             log.Info($"stream length = {imageFileStream.Length}"); // just to verify
 
             // Init MS Cognative Services
-            var visionClient = new VisionServiceClient("cac68b20bbfa40c4bd7860a3f639c201");
+            var visionClient = new VisionServiceClient("YOUR_PASS_GOES_HERE");
 
             // reset stream position to begining 
             imageFileStream.Position = 0;
