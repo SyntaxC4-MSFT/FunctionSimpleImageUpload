@@ -1,7 +1,7 @@
 ---
 services: app-service, functions
 platforms: dotnet
-author: yochay
+author: [yochay](https://github.com/yochay)
 ---
 
 # C# Azure Functions for uploading and processing images
